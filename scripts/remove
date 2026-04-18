@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
+
+# Source common script
+source _common.sh
+
+ynh_script_progression "Removing OpenVPN service..."
+
+port=$(ynh_app_setting_get --app=$app --key=port)
+protocol=$(ynh_app_setting_get --app=$app --key=protocol)
+
+systemctl stop openvpn-server@$app
+systemctl disable openvpn-server@$app
+
+# Remove iptables rules
+if [ -f "/etc/openvpn/scripts/route-down-$app.sh" ]; then
+    /etc/openvpn/scripts/route-down-$app.sh || true
+fi
+rm -f /etc/openvpn/scripts/route-up-$app.sh
+rm -f /etc/openvpn/scripts/route-down-$app.sh
+
+# Remove sysctl
+rm -f /etc/sysctl.d/99-openvpn-$app.conf
+sysctl -p || true
+
+# Remove firewall rules
+if [ -n "$port" ] && [ -n "$protocol" ]; then
+    ynh_system_app_ports --action=remove --port "$port" --protocol "$protocol"
+fi
+
+# Remove directories
+rm -rf "$ovpn_dir"
+rm -rf "$easy_rsa_dir"
+
+# Remove dependencies
+ynh_remove_app_dependencies
+
+ynh_script_progression "Removal completed"

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source /usr/share/yunohost/helpers
+source _common.sh
+
+ynh_script_progression "Restoring OpenVPN service..."
+
+# Restore configuration and certificates
+ynh_restore_file "$ovpn_dir"
+
+systemctl daemon-reload
+systemctl restart openvpn-server@$app
+
+ynh_script_progression "Restore completed"

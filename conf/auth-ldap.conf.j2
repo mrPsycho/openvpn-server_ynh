@@ -1,0 +1,11 @@
+<LDAP>
+    URL     ldap://localhost:389
+    Timeout 15
+    TLSEnable no
+    FollowReferrals yes
+</LDAP>
+<Authorization>
+    BaseDN      "ou=users,dc=yunohost,dc=org"
+    SearchFilter "(&(objectClass=mailAccount)(uid=%u))"
+    RequireGroup  false
+</Authorization>

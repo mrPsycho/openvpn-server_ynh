@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source /usr/share/yunohost/helpers
+source _common.sh
+
+ynh_script_progression "Backing up OpenVPN service..."
+
+# Backup configuration and certificates
+ynh_backup "$ovpn_dir"
+
+ynh_script_progression "Backup completed"

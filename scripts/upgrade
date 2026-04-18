@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
+
+# Source common script
+source _common.sh
+
+ynh_script_progression "Upgrading OpenVPN service..."
+
+# Retrieve current settings
+port=$(ynh_app_setting_get --app=$app --key=port)
+protocol=$(ynh_app_setting_get --app=$app --key=protocol)
+default_route=$(ynh_app_setting_get --app=$app --key=default_route)
+dns_provider=$(ynh_app_setting_get --app=$app --key=dns_provider)
+custom_dns=$(ynh_app_setting_get --app=$app --key=custom_dns)
+
+if [ "$dns_provider" == "google" ]; then
+    dns_list="8.8.8.8 8.8.4.4"
+elif [ "$dns_provider" == "custom" ]; then
+    dns_list=$(echo "$custom_dns" | tr ',' ' ')
+fi
+
+# Install apt dependencies
+ynh_install_app_dependencies $YNH_APP_DEPENDENCIES
+
+# Upgrade OpenVPN server configuration
+ynh_config_add --template="server.conf.j2" --destination="$ovpn_dir/server.conf"
+ynh_config_add --template="auth-ldap.conf.j2" --destination="$ovpn_dir/auth-ldap.conf"
+
+ynh_config_add --template="route-up.sh.j2" --destination="/etc/openvpn/scripts/route-up-$app.sh"
+ynh_config_add --template="route-down.sh.j2" --destination="/etc/openvpn/scripts/route-down-$app.sh"
+
+chown -R root:root "$ovpn_dir"
+chmod +x /etc/openvpn/scripts/route-up-$app.sh
+chmod +x /etc/openvpn/scripts/route-down-$app.sh
+
+# Restart service
+systemctl daemon-reload
+systemctl restart openvpn-server@$app
+
+ynh_script_progression "Upgrade completed"
