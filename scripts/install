@@ -96,6 +96,15 @@ for dns in $dns_list; do
 done
 
 ynh_config_add --template="server.conf.j2" --destination="$ovpn_dir/server.conf"
+
+# Create systemd override
+mkdir -p /etc/systemd/system/openvpn-server@.service.d/
+cat > /etc/systemd/system/openvpn-server@.service.d/override.conf << EOF
+[Service]
+ExecStart=
+ExecStart=/usr/sbin/openvpn --config $ovpn_dir/server.conf
+EOF
+systemctl daemon-reload
 ynh_config_add --template="auth-ldap.conf.j2" --destination="$ovpn_dir/auth-ldap.conf"
 
 # Change permissions
