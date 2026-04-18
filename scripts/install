@@ -79,6 +79,22 @@ chmod 600 "$ovpn_dir/ta.key"
 ynh_script_progression "Configuring OpenVPN..."
 
 # Generate OpenVPN server configuration
+PORT=$port
+PROTOCOL=$protocol
+OVPN_DIR=$ovpn_dir
+APP=$app
+
+if [ "$default_route" = "1" ]; then
+    DEFAULT_ROUTE='push "redirect-gateway def1 bypass-dhcp"'
+else
+    DEFAULT_ROUTE=""
+fi
+
+DNS_LIST=""
+for dns in $dns_list; do
+    DNS_LIST="${DNS_LIST}push \"dhcp-option DNS $dns\"\n"
+done
+
 ynh_config_add --template="server.conf.j2" --destination="$ovpn_dir/server.conf"
 ynh_config_add --template="auth-ldap.conf.j2" --destination="$ovpn_dir/auth-ldap.conf"
 

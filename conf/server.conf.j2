@@ -1,24 +1,20 @@
-port {{ port }}
-proto {{ protocol }}
+port __PORT__
+proto __PROTOCOL__
 dev tun
-ca {{ ovpn_dir }}/ca.crt
-cert {{ ovpn_dir }}/server.crt
-key {{ ovpn_dir }}/server.key
-dh {{ ovpn_dir }}/dh.pem
+ca __OVPN_DIR__/ca.crt
+cert __OVPN_DIR__/server.crt
+key __OVPN_DIR__/server.key
+dh __OVPN_DIR__/dh.pem
 
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 
-{% if default_route %}
-push "redirect-gateway def1 bypass-dhcp"
-{% endif %}
+__DEFAULT_ROUTE__
 
-{% for dns in dns_list.split() %}
-push "dhcp-option DNS {{ dns }}"
-{% endfor %}
+__DNS_LIST__
 
 keepalive 10 120
-tls-auth {{ ovpn_dir }}/ta.key 0
+tls-auth __OVPN_DIR__/ta.key 0
 cipher AES-256-GCM
 
 user nobody
@@ -32,10 +28,10 @@ log-append /var/log/openvpn/openvpn.log
 verb 3
 explicit-exit-notify 1
 
-plugin /usr/lib/openvpn/openvpn-auth-ldap.so {{ ovpn_dir }}/auth-ldap.conf
+plugin /usr/lib/openvpn/openvpn-auth-ldap.so __OVPN_DIR__/auth-ldap.conf
 verify-client-cert none
 username-as-common-name
 
 script-security 2
-route-up /etc/openvpn/scripts/route-up-{{ app }}.sh
-route-pre-down /etc/openvpn/scripts/route-down-{{ app }}.sh
+route-up /etc/openvpn/scripts/route-up-__APP__.sh
+route-pre-down /etc/openvpn/scripts/route-down-__APP__.sh
