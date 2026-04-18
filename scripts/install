@@ -46,6 +46,7 @@ mkdir -p "$easy_rsa_dir"
 ynh_script_progression "Generating certificates..."
 
 # Init PKI
+rm -rf "$easy_rsa_dir"
 make-cadir "$easy_rsa_dir"
 cd "$easy_rsa_dir"
 ./easyrsa init-pki

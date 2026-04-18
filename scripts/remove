@@ -26,9 +26,9 @@ rm -f /etc/sysctl.d/99-openvpn-$app.conf
 sysctl -p || true
 
 # Remove firewall rules
-if [ -n "$port" ] && [ -n "$protocol" ]; then
-    ynh_port_remove --port="$port" --protocol="$protocol"
-fi
+# if [ -n "$port" ] && [ -n "$protocol" ]; then
+#     ynh_port_remove --port="$port" --protocol="$protocol"
+# fi
 
 # Remove directories
 rm -rf "$ovpn_dir"
