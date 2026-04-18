@@ -87,7 +87,7 @@ chown -R root:root "$ovpn_dir"
 
 # Configure Firewall
 ynh_script_progression "Configuring firewall..."
-ynh_system_app_ports --port "$port" --protocol "$protocol"
+ynh_port_add --port "$port" --protocol "$protocol"
 
 # Setup NAT / Routing
 mkdir -p /etc/openvpn/scripts
