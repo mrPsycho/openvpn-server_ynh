@@ -85,9 +85,9 @@ OVPN_DIR=$ovpn_dir
 APP=$app
 
 if [ "$default_route" = "1" ]; then
-    DEFAULT_ROUTE='push "redirect-gateway def1 bypass-dhcp"'
+    DEFAULT_ROUTE_LINE='push "redirect-gateway def1 bypass-dhcp"'
 else
-    DEFAULT_ROUTE=""
+    DEFAULT_ROUTE_LINE=""
 fi
 
 DNS_LIST=""
