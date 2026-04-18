@@ -107,7 +107,7 @@ ynh_script_progression "Starting OpenVPN service..."
 
 # Enable and start service
 systemctl enable openvpn-server@$app
-systemctl start openvpn-server@$app
+# systemctl start openvpn-server@$app
 
 #=================================================
 # END OF SCRIPT
