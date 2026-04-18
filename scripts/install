@@ -79,20 +79,20 @@ chmod 600 "$ovpn_dir/ta.key"
 ynh_script_progression "Configuring OpenVPN..."
 
 # Generate OpenVPN server configuration
-export PORT=$port
-export PROTOCOL=$protocol
-export OVPN_DIR=$ovpn_dir
-export APP=$app
+export port=$port
+export protocol=$protocol
+export ovpn_dir=$ovpn_dir
+export app=$app
 
 if [ "$default_route" = "1" ]; then
-    export DEFAULT_ROUTE_LINE='push "redirect-gateway def1 bypass-dhcp"'
+    export default_route_line='push "redirect-gateway def1 bypass-dhcp"'
 else
-    export DEFAULT_ROUTE_LINE=""
+    export default_route_line=""
 fi
 
-export DNS_LIST=""
+export dns_list_lines=""
 for dns in $dns_list; do
-    export DNS_LIST="${DNS_LIST}push \"dhcp-option DNS $dns\"\n"
+    export dns_list_lines="${dns_list_lines}push \"dhcp-option DNS $dns\"\n"
 done
 
 ynh_config_add --template="server.conf.j2" --destination="$ovpn_dir/server.conf"
