@@ -27,14 +27,11 @@ sysctl -p || true
 
 # Remove firewall rules
 if [ -n "$port" ] && [ -n "$protocol" ]; then
-    ynh_system_app_ports --action=remove --port "$port" --protocol "$protocol"
+    ynh_port_remove --port="$port" --protocol="$protocol"
 fi
 
 # Remove directories
 rm -rf "$ovpn_dir"
 rm -rf "$easy_rsa_dir"
-
-# Remove dependencies
-ynh_remove_app_dependencies
 
 ynh_script_progression "Removal completed"

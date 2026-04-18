@@ -36,9 +36,6 @@ ynh_app_setting_set --app=$app --key=custom_dns --value="$custom_dns"
 
 ynh_script_progression "Preparing installation..."
 
-# Install apt dependencies
-ynh_install_app_dependencies $YNH_APP_DEPENDENCIES
-
 # Create directories
 mkdir -p "$ovpn_dir"
 mkdir -p "$easy_rsa_dir"
