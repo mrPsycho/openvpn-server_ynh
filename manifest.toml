@@ -20,8 +20,13 @@ helpers_version = "2.1"
 architectures = "all"
 multi_instance = false
 
+disk = "50M"
 ldap = "required"
 sso = "not_relevant"
+
+[integration.ram]
+build = "50M"
+runtime = "50M"
 
 [install]
     [install.port]
@@ -30,7 +35,7 @@ sso = "not_relevant"
     default = "1194"
 
     [install.protocol]
-    type = "enum"
+    type = "select"
     choices = ["udp", "tcp"]
     ask.en = "Protocol"
     default = "udp"
@@ -41,7 +46,7 @@ sso = "not_relevant"
     default = true
 
     [install.dns_provider]
-    type = "enum"
+    type = "select"
     choices = ["google", "custom"]
     ask.en = "DNS Provider"
     default = "google"
