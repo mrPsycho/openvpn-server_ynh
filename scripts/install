@@ -14,7 +14,7 @@ port=$YNH_APP_ARG_PORT
 protocol=$YNH_APP_ARG_PROTOCOL
 default_route=$YNH_APP_ARG_DEFAULT_ROUTE
 dns_provider=$YNH_APP_ARG_DNS_PROVIDER
-custom_dns=$YNH_APP_ARG_CUSTOM_DNS
+custom_dns=${YNH_APP_ARG_CUSTOM_DNS:-}
 
 if [ "$dns_provider" == "google" ]; then
     dns_list="8.8.8.8 8.8.4.4"
