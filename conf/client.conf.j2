@@ -6,7 +6,9 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-ca __OVPN_DIR__/ca.crt
+<ca>
+__CA_CERT__
+</ca>
 tls-auth __OVPN_DIR__/ta.key 1
 remote-cert-tls server
 cipher AES-256-GCM

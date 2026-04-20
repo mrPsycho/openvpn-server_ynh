@@ -1,10 +1,18 @@
 port __PORT__
 proto __PROTOCOL__
 dev tun
-ca __OVPN_DIR__/ca.crt
-cert __OVPN_DIR__/server.crt
-key __OVPN_DIR__/server.key
-dh __OVPN_DIR__/dh.pem
+<ca>
+__CA_CERT__
+</ca>
+<cert>
+__SERVER_CERT__
+</cert>
+<key>
+__SERVER_KEY__
+</key>
+<dh>
+__DH_PARAMS__
+</dh>
 
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt

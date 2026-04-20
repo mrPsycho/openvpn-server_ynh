@@ -87,6 +87,12 @@ export protocol=$protocol
 export ovpn_dir=$ovpn_dir
 export app=$app
 
+# Read certificate content for inline bundling
+export ca_cert=$(cat "$ovpn_dir/ca.crt")
+export server_cert=$(cat "$ovpn_dir/server.crt")
+export server_key=$(cat "$ovpn_dir/server.key")
+export dh_params=$(cat "$ovpn_dir/dh.pem")
+
 if [ "$default_route" = "1" ]; then
     export default_route_line='push "redirect-gateway def1 bypass-dhcp"'
 else
@@ -105,6 +111,7 @@ export domain=$domain
 export port=$port
 export protocol=$protocol
 export ovpn_dir=$ovpn_dir
+export ca_cert=$ca_cert
 ynh_config_add --template="client.conf.j2" --destination="$ovpn_dir/openvpn.conf"
 
 # Set permissions for client config
