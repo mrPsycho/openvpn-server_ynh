@@ -16,6 +16,8 @@ default_route=$YNH_APP_ARG_DEFAULT_ROUTE
 dns_provider=$YNH_APP_ARG_DNS_PROVIDER
 custom_dns=${YNH_APP_ARG_CUSTOM_DNS:-}
 
+domain=$(ynh_get_main_domain)
+
 if [ "$dns_provider" == "google" ]; then
     dns_list="8.8.8.8 8.8.4.4"
 elif [ "$dns_provider" == "custom" ]; then
@@ -28,6 +30,7 @@ ynh_app_setting_set --app=$app --key=protocol --value=$protocol
 ynh_app_setting_set --app=$app --key=default_route --value=$default_route
 ynh_app_setting_set --app=$app --key=dns_provider --value="$dns_provider"
 ynh_app_setting_set --app=$app --key=custom_dns --value="$custom_dns"
+ynh_app_setting_set --app=$app --key=domain --value=$domain
 
 
 #=================================================
@@ -96,6 +99,17 @@ for dns in $dns_list; do
 done
 
 ynh_config_add --template="server.conf.j2" --destination="$ovpn_dir/server.conf"
+
+# Generate client config
+export domain=$domain
+export port=$port
+export protocol=$protocol
+export ovpn_dir=$ovpn_dir
+ynh_config_add --template="client.conf.j2" --destination="$ovpn_dir/openvpn.conf"
+
+# Set permissions for client config
+chown root:root "$ovpn_dir/openvpn.conf"
+chmod 644 "$ovpn_dir/openvpn.conf"
 
 # Create systemd override
 mkdir -p /etc/systemd/system/openvpn-server@.service.d/

@@ -10,6 +10,7 @@ ynh_script_progression "Removing OpenVPN service..."
 
 port=$(ynh_app_setting_get --app=$app --key=port)
 protocol=$(ynh_app_setting_get --app=$app --key=protocol)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
 
 systemctl stop openvpn-server@$app
 systemctl disable openvpn-server@$app
