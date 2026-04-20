@@ -6,14 +6,18 @@ set -e
 
 echo "=== Testing OpenVPN Server Package Installation ==="
 
-# Answer the interactive prompts
-{
-    echo "Yes, I understand"
-    echo "1194"
-    echo "udp"
-    echo "1"
-    echo "google"
-} | yunohost app install https://github.com/mrPsycho/openvpn-server_ynh
+# Remove any existing installation first
+echo "Removing any existing installation..."
+yunohost app remove openvpn-server --force 2>/dev/null || true
+
+# Install with command-line arguments to avoid interactive prompts
+echo "Installing OpenVPN server package..."
+yunohost app install https://github.com/mrPsycho/openvpn-server_ynh \
+  --args port=1194 \
+  --args protocol=udp \
+  --args default_route=true \
+  --args dns_provider=google \
+  --force
 
 echo ""
 echo "=== Installation Complete. Checking files ==="
